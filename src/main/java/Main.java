@@ -1,5 +1,7 @@
 import core.StateMachine;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Main {
 
     enum States {
@@ -15,6 +17,11 @@ public class Main {
         System.out.println(fsm.currentState);
 
         fsm.addEvent(States.ORDER_PLACED, States.ORDER_CONFIRMED, Events.DELIVERED);
+        fsm.addAction(States.ORDER_PLACED, States.ORDER_CONFIRMED, (ctx) -> {
+            System.out.println("State transition is happening!!!");
+            System.out.println(ctx.getEvent() + " " + ctx.getSource() + " " + ctx.getTarget());
+            return true;
+        });
         fsm.handleEvent(Events.DELIVERED);
 
         System.out.println(fsm.currentState);
